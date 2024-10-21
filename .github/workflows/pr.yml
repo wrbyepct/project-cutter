@@ -46,7 +46,12 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry install --no-root
           source ./.venv/bin/activate
-          
+      
+      - name: Basic setup for git
+        run: |
+          git config user.email "test@example.com"
+          git config user.name "Test Git"
+
       - name: Run test
         run: |
           find . -type f -name "run" -exec chmod +x {} \;
