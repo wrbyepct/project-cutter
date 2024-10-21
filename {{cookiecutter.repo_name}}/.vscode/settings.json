@@ -1,0 +1,32 @@
+{
+	"[python]": {
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports.ruff": "explicit",
+			"source.fixAll.ruff": "explicit" 
+		},
+
+		"editor.defaultFormatter": "charliermarsh.ruff"
+		
+	},
+
+	"files.exclude": {
+  		"**/.git": false,
+	},
+	
+	"editor.rulers": [
+		{
+			"color": "#347839",
+			"column": 88
+		},
+		{
+			"color": "#b64c46",
+			"column": 119
+		}
+	],
+	"python.testing.pytestArgs": [
+		"tests"
+	],
+	"python.testing.unittestEnabled": false,
+	"python.testing.pytestEnabled": true
+}

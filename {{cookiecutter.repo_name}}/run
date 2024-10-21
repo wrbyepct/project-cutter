@@ -1,0 +1,40 @@
+#!/bin/bash
+
+build_package() {
+    python -m build src
+}
+
+install_package() {
+    poetry add ./src/dist/*.whl
+}
+
+clean_package() {
+    rm -rf ./src/dist ./src/*.egg-info
+}
+
+test:all() {
+    poetry run python -m pytest
+}
+
+
+lint() {
+    SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
+}
+
+
+init_git_and_commit() {
+    git init
+    git branch -M main
+    git add . 
+    git commit -m "First cutter project commit"
+}
+
+
+help() {
+    echo "${1} <task> <arg>"
+    echo "Tasks:"
+    compgen -A function | cat -n 
+}
+
+TIMEFORMAT="Task complete in %3lR"
+time ${@:-help}

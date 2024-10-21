@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "cutter"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+cookiecutter = "^2.6.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.9"
+pydoclint = "^0.5.9"
+pytest = "^8.3.3"
+pytest-sugar = "^1.0.0"
+pytest-xdist = "^3.6.1"
+twine = "^5.1.1"
+pre-commit = "^4.0.1"
+build = "^1.2.2.post1"
+commitizen = "^3.29.1"
+pytest-cov = "^5.0.0"
+
+
+[tool.ruff.lint]
+select = ["ALL"]
+fixable = ["ALL"]
+ignore = [
+    "D107", # Checks for missing docstring in `__init__`
+    "D407", # Checks for section headers in docstrings that are not followed by underlines.
+    "D203", # 1 blank line required before class docstring
+    "D212", # Multi-line docstring summary should start at the first line
+    "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
+    "S101", 
+    "INP001", 
+    "ANN201", 
+    "ANN001"
+
+]
+
+
+
+[tool.ruff.lint.mccabe]
+# Check mccabe. 
+# Each additional decision point (e.g., if, elif, else, for, while, try, except, etc.) 
+# increases the complexity score by 1.
+# Flag errors (`C901`) whenever the complexity level exceeds 8.
+max-complexity = 8
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]

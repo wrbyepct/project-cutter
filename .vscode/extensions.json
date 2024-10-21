@@ -1,0 +1,52 @@
+{
+    "recommendations": [
+        // Python 
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "donjayamanne.python-environment-manager",
+        "njpwerner.autodocstring",
+
+        // Backend
+        "batisteo.vscode-django",
+        "ms-azuretools.vscode-docker",
+
+        // Test
+        "nickmillerdev.pytest-fixtures",
+
+        // linting 
+        "charliermarsh.ruff",
+        "ms-python.mypy-type-checker",
+
+        // Workflow
+        "github.vscode-github-actions",
+
+        // Intellisense
+        "christian-kohler.path-intellisense", 
+        "hossaini.bootstrap-intellisense",
+        "VisualStudioExptTeam.vscodeintellicode", // see real world coe examples
+
+        // Frontend
+        "AESSoft.aessoft-class-autocomplete",
+        "ecmel.vscode-html-css",
+        "formulahendry.auto-rename-tag", // html
+
+        // Task tracking
+        "Gruntfuggly.todo-tree",
+
+        // file support
+        "tamasfe.even-better-toml",
+        "skellock.just",
+        "yzhang.markdown-all-in-one",
+        "samuelcolvin.jinjahtml",
+        "stkb.rewrap", // rewrap comment if too long
+
+        // UI
+        "will-stone.plastic", // vscode UI style 
+        "sabaken.seti-minimal-folder", // file UI
+
+        // WSL
+        "ms-vscode-remote.remote-wsl"
+
+    ]
+    
+}

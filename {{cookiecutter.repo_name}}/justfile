@@ -1,0 +1,21 @@
+build_package:
+    /bin/bash run build_package
+
+install_package:
+    /bin/bash run install_package
+
+init_git_and_commit:
+    /bin/bash run init_git_and_commit
+
+lint:
+    /bin/bash run lint
+
+
+test:
+    /bin/bash run test:all
+
+
+
+
+
+

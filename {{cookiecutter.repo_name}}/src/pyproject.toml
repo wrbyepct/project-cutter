@@ -1,0 +1,17 @@
+[project]
+name = "example.pkg"
+authors = [{ name = "AJ", email = "test@test.com" }]
+description = "example.pkg"
+readme = "README.md"
+version = "0.0.0"
+license = { text = "MIT" }
+dependencies = [
+    "rich<14",
+]
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+dev = ["pytest"]
