@@ -23,11 +23,14 @@ lint() {
 
 
 init_git_and_commit() {
+    git config user.email "test@example.com"
+    git config user.name "Test Git"
     git init
     git branch -M main
     git add . 
     git commit -m "First cutter project commit"
 }
+
 
 
 help() {
