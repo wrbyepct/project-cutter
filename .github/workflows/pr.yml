@@ -1,4 +1,4 @@
-name: Build, Test
+name: Lint and Test
 
 on:
   pull_request:
@@ -31,5 +31,23 @@ jobs:
       - name: Lint
         run: |
           /bin/bash -x run lint
+  test:        
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with: 
+          python-version: 3.12
+        
+      - name: Install test dependencies
+        run: |
+          pip install --upgrade pip && pip install poetry
+          poetry config virtualenvs.in-project true
+          poetry install --no-root
+          source ./.venv/bin/activate
 
-    
+      - name: Run test
+        run: |
+          find . -type f -name "run" -exec chmod +x {} \;
+          /bin/bash -x run test:all

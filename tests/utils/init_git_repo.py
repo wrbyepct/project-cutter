@@ -12,5 +12,5 @@ def intialize_git_and_commit(project_dir: Path) -> None:
         project_dir (Path): Generated project Path.
 
     """
-    cmd = ["just", "init_git_and_commit"]
+    cmd = ["./run", "init_git_and_commit"]
     subprocess.run(args=cmd, cwd=project_dir, check=True)
