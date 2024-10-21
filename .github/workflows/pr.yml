@@ -55,4 +55,5 @@ jobs:
           
       - name: Run test
         run: |
+          find . -type f -name "run" -exec chmod +x {} \;
           /bin/bash -x run test:all
