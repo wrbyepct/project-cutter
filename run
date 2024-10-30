@@ -13,7 +13,7 @@ init_git_and_commit() {
     git init
     git branch -M main
     git add . 
-    git commit -m "First cutter project commit"
+    git commit -m "First commit"
 }
 
 
@@ -32,6 +32,127 @@ test:last-fail() {
 lint() {
     git add .; SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
 }
+
+
+create-project-workflow() {
+
+    create-repo-if-not-exists
+    make-first-commit-to-main
+    generate-cutter-project
+    lint-and-commit-to-feat-branch
+    open-pr-from-feat-to-main
+    configure-repo
+
+}
+
+# args:
+#   - GIHUB_USERNAME
+#   - REPO_NAME
+#   - IS_PUBLIC 
+create-repo-if-not-exists() {
+    local is_public=${IS_PUBLIC:-false}
+
+    echo "Checking is repo existing..."
+
+    # only when previous code succeeds the code after && will get executed
+    gh repo view "${GITHUB_USERNAME}/${REPO_NAME}" > /dev/null \
+    && echo "Repo exists, exiting..." && return 0 
+
+    echo "Repo does not exist, creating...."
+
+    if [[ "$is_public" == "true"  ]]; then
+        PUBLIC_OR_PRIVATE="public"
+    else
+        PUBLIC_OR_PRIVATE="private"
+    fi 
+
+    gh repo create "${GITHUB_USERNAME}/${REPO_NAME}" "--${PUBLIC_OR_PRIVATE}"
+}
+
+
+make-first-commit-to-main() {
+    mkdir -p "${REPO_NAME}/${REPO_NAME}"
+    cd "${REPO_NAME}/${REPO_NAME}"
+
+    init_git_and_commit
+
+    git remote add origin "https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git"
+    git push -u origin main
+
+    cd -
+    
+}
+
+generate-cutter-project() {
+
+    local output_dir="./${REPO_NAME}"
+
+    CONFIG_FILE_PATH="./${REPO_NAME}.config.yaml"
+    cat <<EOF > ${CONFIG_FILE_PATH}
+default_context:
+    repo_name: ${REPO_NAME}
+    example_pkg: ${PACKAGE_NAME}
+EOF
+
+    cookiecutter ./ \
+        --output-dir "${output_dir}" \
+        --no-input \
+        --config-file ${CONFIG_FILE_PATH}
+
+    rm ${CONFIG_FILE_PATH}
+
+}
+
+
+
+lint-and-commit-to-feat-branch() {
+    git checkout -b "feat/pupulate-project-from-template"
+    lint 
+    git add . # Assume pre-commit autofix modified files
+    git commit -m "feat/populated from template project."
+    git push -u origin feat/pupulate-project-from-template
+}
+
+open-pr-from-feat-to-main() {
+    gh pr create \
+        --title "feat/populated from template project." \
+        --body "Merge generated project from feat to main." \
+        --base main \
+        --head "feat/pupulate-project-from-template" \
+        --repo "${GITHUB_USERNAME}/${REPO_NAME}"
+}
+
+
+configure-repo() {
+    # configure secret
+    set-repo-variables
+    # protect main branch, forcing passing build on feature branch
+    configure-branch-protection-using-gh-api
+}
+
+
+set-repo-variables() {
+    gh variable set YONKO -b "Kaido" --repo "${GITHUB_USERNAME}/${REPO_NAME}"
+    gh variable set PirateKing -b "Roger" --repo "${GITHUB_USERNAME}/${REPO_NAME}"
+}
+
+
+configure-branch-protection-using-gh-api() {
+    local BRANCH="main"
+    gh api \
+        --method PUT \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        "/repos/${GITHUB_USERNAME}/${REPO_NAME}/branches/${BRANCH}/protection" \
+        -F "required_status_checks[strict]=true" \
+        -F "required_status_checks[checks][][context]=test" \
+        -F "required_status_checks[checks][][context]=lint" \
+        -F "enforce_admins=null" \
+        -F "restrictions=null" \
+        -F "required_pull_request_reviews[required_approving_review_count]=1" \
+        > /dev/null
+}
+
 
 help() {
     echo "${1} <task> <arg>"
