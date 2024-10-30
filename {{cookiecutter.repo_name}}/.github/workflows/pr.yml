@@ -1,0 +1,61 @@
+name: Lint and Test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    # inputs:
+    #   publish_to_main:
+    #     description: Publish to PyPI if tests successful
+    #     required: true
+    #     type: boolean
+    #     default: false
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with: 
+          python-version: 3.12
+      
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit
+      - name: Lint
+        run: |
+          /bin/bash -x run lint
+  test:        
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with: 
+          python-version: 3.12
+        
+      - name: Install test dependencies
+        run: |
+          pip install --upgrade pip && pip install poetry
+          poetry config virtualenvs.in-project true
+          poetry install --no-root
+          source ./.venv/bin/activate
+      
+      - name: Make run script executable
+        run: |
+          find . -type f -name "run" -exec chmod +x {} \;
+      
+      - name: Build and install package
+        run: |
+          /bin/bash run build_package
+          /bin/bash run install_package
+
+      - name: Run test
+        run: |
+          /bin/bash -x run test:all

@@ -19,6 +19,7 @@
 
         // Workflow
         "github.vscode-github-actions",
+        "me-dutour-mathieu.vscode-github-actions",
 
         // Intellisense
         "christian-kohler.path-intellisense", 
@@ -35,10 +36,11 @@
 
         // file support
         "tamasfe.even-better-toml",
-        "skellock.just",
+        "skellock.just", // Just syntax highlight
         "yzhang.markdown-all-in-one",
         "samuelcolvin.jinjahtml",
         "stkb.rewrap", // rewrap comment if too long
+        "bierner.markdown-mermaid", // Preview Markdown mermaid
 
         // UI
         "will-stone.plastic", // vscode UI style 

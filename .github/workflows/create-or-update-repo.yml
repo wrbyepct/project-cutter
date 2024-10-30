@@ -1,0 +1,89 @@
+name: Create or Update repo
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_name:
+        description: "Name of the repo to create"
+        required: true
+        type: string
+
+      is_public_repo:
+        description:  If unchecked, the repo is private
+        required: true
+        default: false
+        type: boolean
+
+      package_import_name:
+        description: "Your package name you want to build in the project"
+        required: true
+        type: string
+
+jobs:
+  
+  create-repo-if-not-exists:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_USERNAME: wrbyepct
+      REPO_NAME: ${{ github.event.inputs.repo_name }}
+      IS_PUBLIC: ${{ github.event.inputs.is_public_repo }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create Repo If Not Exists
+        run: | 
+          /bin/bash run create-repo-if-not-exists
+
+
+  
+
+  open-pull-request-to-feature-to-branch:
+    needs: [create-repo-if-not-exists]
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_USERNAME: wrbyepct
+      REPO_NAME: ${{ github.event.inputs.repo_name }}
+      PACKAGE_NAME: ${{ github.event.inputs.package_import_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Make First Commit to Main
+        run: |
+          /bin/bash run make-first-commit-to-main
+
+      - name: Generate CookieCutter Project
+        run: |
+          /bin/bash run generate-cutter-project
+
+      - name: Lint & Commit to Feature Branch 
+        run: |
+          /bin/bash run lint-and-commit-to-feat-branch
+
+      - name: Open Pull Request from Feature to Main
+        run: |
+          /bin/bash run open-pr-from-feat-to-main
+
+
+  configure-repo:
+    needs: [create-repo-if-not-exists]
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_USERNAME: wrbyepct
+      REPO_NAME: ${{ github.event.inputs.repo_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Main Branch Protection & Passing Build Rules
+        run: |
+          /bin/bash run configure-repo
+
+ 

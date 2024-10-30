@@ -1,12 +1,6 @@
-# Github action CI/CD
-## When to trigger workflow?
-    1. Open a pull request
-    2. synchronize a feature branch
-    3. merger to main
+```mermaid
+graph TD
+    A[Create repo if not exists] --> B[COnfigure Repo, i.e. PyPI secrets, branch protection etc.]
+    A --> C[Open a PR with boilerplate code]
 
-## What jobs to run?
-    1. Clone github repo
-    2. Install python
-    3. Install dependencies
-       1. Execute tests    
-       2. Linting
+```
