@@ -11,6 +11,8 @@ install_package() {
 
 init_git_and_commit() {
     git init
+    git config user.email "test@example.com"
+    git config user.name "Test Git"
     git branch -M main
     git add . 
     git commit -m "First commit"
