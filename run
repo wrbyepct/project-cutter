@@ -74,7 +74,9 @@ create-repo-if-not-exists() {
 
 make-first-commit-to-main() {
     mkdir -p "${REPO_NAME}/${REPO_NAME}"
+
     cd "${REPO_NAME}/${REPO_NAME}"
+    touch first_commit.txt 
 
     init_git_and_commit
 

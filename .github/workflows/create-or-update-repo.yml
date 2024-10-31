@@ -39,6 +39,10 @@ jobs:
       - name: Create Repo If Not Exists
         run: | 
           /bin/bash run create-repo-if-not-exists
+          
+      - name: Make First Commit to Main
+        run: |
+          /bin/bash run make-first-commit-to-main
 
 
   open-pull-request-to-feature-to-branch:
@@ -59,9 +63,7 @@ jobs:
           python-version: 3.12
       
 
-      - name: Make First Commit to Main
-        run: |
-          /bin/bash run make-first-commit-to-main
+
 
       - name: Install dependencies
         run: |
