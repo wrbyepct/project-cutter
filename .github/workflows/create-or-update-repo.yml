@@ -1,5 +1,8 @@
 name: Create or Update repo
 
+
+
+
 on:
   workflow_dispatch:
     inputs:
@@ -9,7 +12,7 @@ on:
         type: string
 
       is_public_repo:
-        description:  If unchecked, the repo is private
+        description:  "If unchecked, the repo is private"
         required: true
         default: false
         type: boolean
@@ -19,14 +22,17 @@ on:
         required: true
         type: string
 
+env:
+  GITHUB_TOKEN: ${{ secrets.PERSRONA_TOKEN }}
+  GITHUB_USERNAME: wrbyepct
+  REPO_NAME: ${{ github.event.inputs.repo_name }}
+
 jobs:
   
   create-repo-if-not-exists:
     runs-on: ubuntu-latest
 
     env:
-      GITHUB_USERNAME: wrbyepct
-      REPO_NAME: ${{ github.event.inputs.repo_name }}
       IS_PUBLIC: ${{ github.event.inputs.is_public_repo }}
 
     steps:
@@ -45,8 +51,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GITHUB_USERNAME: wrbyepct
-      REPO_NAME: ${{ github.event.inputs.repo_name }}
       PACKAGE_NAME: ${{ github.event.inputs.package_import_name }}
 
     steps:
@@ -74,10 +78,6 @@ jobs:
   configure-repo:
     needs: [create-repo-if-not-exists]
     runs-on: ubuntu-latest
-
-    env:
-      GITHUB_USERNAME: wrbyepct
-      REPO_NAME: ${{ github.event.inputs.repo_name }}
 
     steps:
       - uses: actions/checkout@v4
