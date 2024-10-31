@@ -1,8 +1,5 @@
 name: Create or Update repo
 
-
-
-
 on:
   workflow_dispatch:
     inputs:
@@ -44,8 +41,6 @@ jobs:
           /bin/bash run create-repo-if-not-exists
 
 
-  
-
   open-pull-request-to-feature-to-branch:
     needs: [create-repo-if-not-exists]
     runs-on: ubuntu-latest
@@ -58,9 +53,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with: 
+          python-version: 3.12
+      
+
       - name: Make First Commit to Main
         run: |
           /bin/bash run make-first-commit-to-main
+
+      - name: Install dependencies
+        run: |
+          pip install cookiecutter pre-commit
 
       - name: Generate CookieCutter Project
         run: |
