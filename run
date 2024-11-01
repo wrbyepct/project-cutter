@@ -175,10 +175,10 @@ configure-branch-protection-using-gh-api() {
 
 
 run-create-orupdate-repo() {
-    git add .github/ \
-    && git commit -m "fix:debugging the create-or-update-repo.yml" \
+    git add .
+    git commit -m "fix:debugging the create-or-update-repo.yml"
+    git push origin main
 
-    && git push origin main
     gh workflow run .github/workflows/create-or-update-repo.yml \
         -f repo_name="pirate" \
         -f is_public_repo=true  \
