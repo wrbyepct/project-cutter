@@ -20,10 +20,14 @@ on:
         type: string
 
 env:
-  GITHUB_TOKEN: ${{ secrets.PERSRONA_TOKEN }}
+  GH_TOKEN: ${{ secrets.PERSRONA_TOKEN }}
   PUSH_TOKEN: ${{ secrets.PUSH_TOKEN}}
   GITHUB_USERNAME: wrbyepct
   REPO_NAME: ${{ github.event.inputs.repo_name }}
+
+  
+permissions:
+  contents: write
 
 jobs:
   
@@ -34,8 +38,7 @@ jobs:
       IS_PUBLIC: ${{ github.event.inputs.is_public_repo }}
       PACKAGE_NAME: ${{ github.event.inputs.package_import_name }}
 
-    permissions:
-      contents: write
+ 
     steps:
       - uses: actions/checkout@v4
         with:
