@@ -92,9 +92,9 @@ make-first-commit-to-main() {
     set -x
     cd "${REPO_NAME}"
     init_git_and_commit
+    git remote add origin https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
     git branch 
-    git push \
-    https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git main
+    git push origin main
     
 }
 
