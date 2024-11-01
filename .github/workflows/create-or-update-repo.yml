@@ -32,6 +32,9 @@ jobs:
     env:
       IS_PUBLIC: ${{ github.event.inputs.is_public_repo }}
       PACKAGE_NAME: ${{ github.event.inputs.package_import_name }}
+      
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
