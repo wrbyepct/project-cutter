@@ -9,14 +9,6 @@ install_package() {
 }
 
 
-init_git_and_commit() {
-    git init
-    git config user.email "test@example.com"
-    git config user.name "Test Git"
-    git branch -M main
-    git add . 
-    git commit -m "First commit"
-}
 
 
 test:all() {
@@ -35,17 +27,20 @@ lint() {
     git add .; SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
 }
 
-
+# For local usage
 create-project-workflow() {
 
-    create-repo-if-not-exists
-    make-first-commit-to-main
-    generate-cutter-project
-    lint-and-commit-to-feat-branch
-    open-pr-from-feat-to-main
-    configure-repo
+    repo-setup
+    second-commit-to-feat-branch-and-make-pr
 
 }
+
+repo-setup() {
+    create-repo-if-not-exists
+    generate-cutter-project
+    make-first-commit-to-main
+}
+
 
 # args:
 #   - GIHUB_USERNAME
@@ -72,20 +67,6 @@ create-repo-if-not-exists() {
 }
 
 
-make-first-commit-to-main() {
-    mkdir -p "${REPO_NAME}/${REPO_NAME}"
-
-    cd "${REPO_NAME}/${REPO_NAME}"
-    touch first_commit.txt 
-
-    init_git_and_commit
-
-    git remote add origin "https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git"
-    git push -u origin main
-
-    cd -
-    
-}
 
 generate-cutter-project() {
 
@@ -99,7 +80,6 @@ default_context:
 EOF
 
     cookiecutter ./ \
-        --output-dir "${output_dir}" \
         --no-input \
         --config-file ${CONFIG_FILE_PATH}
 
@@ -108,9 +88,45 @@ EOF
 }
 
 
+make-first-commit-to-main() {
+
+    cd "${REPO_NAME}"
+    init_git_and_commit
+
+    git remote add origin "https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git"
+    git push -u origin main
+    
+}
+
+init_git_and_commit() {
+    git init
+    git config user.email "test@example.com"
+    git config user.name "Test Git"
+    git branch -M main
+    git add . 
+    git commit -m "First commit"
+}
+
+
+delete-project-dir() {
+    cd -
+    rm -rf ${REPO_NAME}
+}
+
+
+second-commit-to-feat-branch-and-make-pr() {
+    git clone "https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git"
+    cd ${REPO_NAME}
+
+    lint-and-commit-to-feat-branch
+    open-pr-from-feat-to-main
+}
+
+
 
 lint-and-commit-to-feat-branch() {
     git checkout -b "feat/pupulate-project-from-template"
+    touch makeing-pr.txt
     lint 
     git add . # Assume pre-commit autofix modified files
     git commit -m "feat/populated from template project."
@@ -125,6 +141,7 @@ open-pr-from-feat-to-main() {
         --head "feat/pupulate-project-from-template" \
         --repo "${GITHUB_USERNAME}/${REPO_NAME}"
 }
+
 
 
 configure-repo() {
