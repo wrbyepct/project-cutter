@@ -97,7 +97,7 @@ make-first-commit-to-main() {
     git config --global user.name "${GITHUB_USERNAME}"
     git config --global user.email "test@test.mail"
 
-    git remote set-url origin https://${GITHUB_USERNAME}:${GH_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
+    git remote add origin https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
 
     git add . 
     git commit -m "initial commit"
