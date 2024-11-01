@@ -21,11 +21,10 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.PERSRONA_TOKEN }}
-  PUSH_TOKEN: ${{ secrets.PUSH_TOKEN}}
   GITHUB_USERNAME: wrbyepct
   REPO_NAME: ${{ github.event.inputs.repo_name }}
 
-  
+
 permissions:
   contents: write
 
@@ -55,7 +54,7 @@ jobs:
           
       - name: Create Repo If Not Exists
         run: | 
-          /bin/bash run repo-setup
+          bash -x run repo-setup
           
 
   open-pull-request-to-feature-to-branch:
@@ -72,14 +71,13 @@ jobs:
         with: 
           python-version: 3.12
       
-
       - name: Install dependencies
         run: |
           pip install pre-commit
 
       - name: Generate CookieCutter Project
         run: |
-          /bin/bash run second-commit-to-feat-branch-and-make-pr
+          bash -x run second-commit-to-feat-branch-and-make-pr
 
 
 
@@ -92,6 +90,6 @@ jobs:
 
       - name: Configure Main Branch Protection & Passing Build Rules
         run: |
-          /bin/bash run configure-repo
+          bash -x run configure-repo
 
  
