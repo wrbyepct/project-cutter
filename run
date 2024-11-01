@@ -96,7 +96,8 @@ make-first-commit-to-main() {
 
     set-git-config
 
-
+    git remote add origin \
+    https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
     git add . 
     git commit -m "initial commit"
     git push origin main
@@ -106,7 +107,7 @@ make-first-commit-to-main() {
 set-git-config() {
     git config --global user.name "${GITHUB_USERNAME}"
     git config --global user.email "test@test.mail"
-    git remote add origin https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
+   
 }
 
 
@@ -136,7 +137,9 @@ lint-and-commit-to-feat-branch() {
     lint 
     git add . # Assume pre-commit autofix modified files
     git commit -m "feat/populated from template project."
-    git push -u origin feat/pupulate-project-from-template
+    git push \
+    https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git \
+    feat/pupulate-project-from-template
 }
 
 open-pr-from-feat-to-main() {
