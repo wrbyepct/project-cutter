@@ -93,15 +93,15 @@ make-first-commit-to-main() {
     cd "${REPO_NAME}"
     init_git_and_commit
     git remote add origin https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
-    git branch 
-    git push origin main
+
+    git config --global user.name "${GIT_USERNAME}"
+    git config --global user.password "${PUSH_TOKEN}"
+    git push -u origin main
     
 }
 
 init_git_and_commit() {
     git init
-    git config user.email "test@example.com"
-    git config user.name "Test Git"
     git branch -M main
     git add . 
     git commit -m "First commit"
