@@ -94,8 +94,7 @@ make-first-commit-to-main() {
     git init
     git branch -M main
 
-    git config --global user.name "${GITHUB_USERNAME}"
-    git config --global user.email "test@test.mail"
+    set-git-config
 
     git remote add origin https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
 
@@ -103,6 +102,11 @@ make-first-commit-to-main() {
     git commit -m "initial commit"
     git push origin main
     echo "cool"
+}
+
+set-git-config() {
+    git config --global user.name "${GITHUB_USERNAME}"
+    git config --global user.email "test@test.mail"
 }
 
 
@@ -117,6 +121,8 @@ second-commit-to-feat-branch-and-make-pr() {
     git clone "https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git"
     cd ${REPO_NAME}
 
+    set-git-config
+
     lint-and-commit-to-feat-branch
     open-pr-from-feat-to-main
 }
@@ -124,6 +130,7 @@ second-commit-to-feat-branch-and-make-pr() {
 
 
 lint-and-commit-to-feat-branch() {
+    set -x
     git checkout -b "feat/pupulate-project-from-template"
     touch makeing-pr.txt
     lint 
