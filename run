@@ -96,7 +96,6 @@ make-first-commit-to-main() {
 
     set-git-config
 
-    git remote add origin https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
 
     git add . 
     git commit -m "initial commit"
@@ -107,6 +106,7 @@ make-first-commit-to-main() {
 set-git-config() {
     git config --global user.name "${GITHUB_USERNAME}"
     git config --global user.email "test@test.mail"
+    git remote add origin https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_USERNAME}/${REPO_NAME}.git
 }
 
 
@@ -131,7 +131,7 @@ second-commit-to-feat-branch-and-make-pr() {
 
 lint-and-commit-to-feat-branch() {
     set -x
-    git checkout -b "feat/pupulate-project-from-template"
+    git checkout -b feat/pupulate-project-from-template
     touch makeing-pr.txt
     lint 
     git add . # Assume pre-commit autofix modified files
@@ -144,7 +144,7 @@ open-pr-from-feat-to-main() {
         --title "feat/populated from template project." \
         --body "Merge generated project from feat to main." \
         --base main \
-        --head "feat/pupulate-project-from-template" \
+        --head feat/pupulate-project-from-template \
         --repo "${GITHUB_USERNAME}/${REPO_NAME}"
 }
 
